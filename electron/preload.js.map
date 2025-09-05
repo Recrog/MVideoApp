@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../electron-src/preload.ts"],
+  "sourcesContent": ["import { contextBridge, ipcRenderer } from 'electron'\r\n\r\ncontextBridge.exposeInMainWorld('api', {\r\n  openFiles: (filters?: Electron.FileFilter[]) => ipcRenderer.invoke('dialog:openFiles', filters),\r\n  onToggleRecord: (cb: () => void) => {\r\n    const listener = () => cb()\r\n    ipcRenderer.on('toggle-record', listener)\r\n    return () => ipcRenderer.removeListener('toggle-record', listener)\r\n  },\r\n  saveBlob: (buffer: ArrayBuffer, ext: string) => ipcRenderer.invoke('fs:saveTempBlob', buffer, ext),\r\n  exportTimeline: (items: unknown) => ipcRenderer.invoke('ffmpeg:exportTimeline', items),\r\n})\r\n\r\ndeclare global {\r\n  interface Window {\r\n    api: {\r\n      openFiles: (filters?: Electron.FileFilter[]) => Promise<string[]>\r\n      onToggleRecord: (cb: () => void) => () => void\r\n      saveBlob: (buffer: ArrayBuffer, ext: string) => Promise<string>\r\n      exportTimeline: (items: unknown) => Promise<string>\r\n    }\r\n  }\r\n}\r\n\r\n\r\n"],
+  "mappings": ";AAAA,sBAA2C;AAE3C,8BAAc,kBAAkB,OAAO;AAAA,EACrC,WAAW,CAAC,YAAoC,4BAAY,OAAO,oBAAoB,OAAO;AAAA,EAC9F,gBAAgB,CAAC,OAAmB;AAClC,UAAM,WAAW,MAAM,GAAG;AAC1B,gCAAY,GAAG,iBAAiB,QAAQ;AACxC,WAAO,MAAM,4BAAY,eAAe,iBAAiB,QAAQ;AAAA,EACnE;AAAA,EACA,UAAU,CAAC,QAAqB,QAAgB,4BAAY,OAAO,mBAAmB,QAAQ,GAAG;AAAA,EACjG,gBAAgB,CAAC,UAAmB,4BAAY,OAAO,yBAAyB,KAAK;AACvF,CAAC;",
+  "names": []
+}
