@@ -1,75 +1,90 @@
-# Product Promo Editor (Electron + React + TS)
+🎯 Amaç
 
-Scripts:
+Ürün tanıtım editörü
 
-- `npm run dev` — starts Vite and Electron (dev)
-- `npm run build` — builds renderer and Electron output
-- `npm run dist` — packages Windows installer via electron-builder
+Kullanıcı bilgisayarında çalışacak (Windows .exe)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Uygulama içinden fotoğraf, video, ses dosyaları eklenip düzenlenecek
 
-Currently, two official plugins are available:
+Çıkış: tek MP4 tanıtım videosu
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔹 Özellikler
 
-## Expanding the ESLint configuration
+Fotoğraf Ekleme
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Bilgisayardan fotoğraf yüklenir.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Foto altına otomatik etiket (template) gelir (örn: Ürün Adı + Fiyat kutusu).
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+Etiket kısmındaki yazılar biz değiştiriyoruz.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Kullanıcı ok tuşlarıyla / sağ-sol butonlarıyla veya thumbnail’e tıklayarak fotoğraflar arasında navigate edecek.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Sıralama / Düzenleme
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Fotoğraflar sağda thumbnail listesine düşer.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+Sürükle-bırak ile sırası değiştirilebilir.
+
+Yeni foto eklenebilir.
+
+Video Çekme (Uygulama içinden)
+
+F4’e bas → kamera + mikrofon açılır, kayıt başlar.
+
+Tekrar F4 → kayıt durur, timeline’a video olarak eklenir.
+
+Ses Dosyası Ekleme / Değiştirme
+
+Dışarıdan ses dosyası yüklenebilir.
+
+Timeline üzerinde sürükle-bırak ile yeri değiştirilebilir.
+
+Export
+
+FFmpeg kullanılarak fotoğraf + etiket + ses + video birleştirilir.
+
+Çıktı: .mp4 tanıtım videosu.
+
+🔹 Kullanacağımız Teknolojiler
+⚙️ Uygulama Çatısı
+
+Electron → masaüstü uygulaması (Windows için .exe çıkışı alacağız)
+
+React (TSX) → UI yönetimi (fotoğraf listesi, drag-drop, input alanları)
+
+🎨 Arayüz & Düzenleme
+
+React-Beautiful-DnD → sürükle-bırak sıralama
+
+Konva.js / Fabric.js → fotoğraf üstüne template (etiket + yazılar)
+
+🎥 Medya İşleme
+
+MediaRecorder API → uygulama içinden video + ses kaydı
+
+Electron globalShortcut → F4 tuşunu yakalayıp kayıt başlat/durdur
+
+FFmpeg → tüm medya dosyalarını (foto+etiket+video+ses) tek MP4’e render etme
+
+🔹 Çalışma Akışı
+
+Fotoğraf ekle → Etiket otomatik geliyor.
+
+Sağdaki listeden sürükle-bırak → sırasını değiştiriyoruz.
+
+F4 ile kayıt → Kamera kaydı timeline’a ekleniyor.
+
+Ses ekleme → ses dosyası timeline’a düşüyor, yeri değiştirilebiliyor.
+
+Export → FFmpeg ile tek MP4 video çıkıyor.
+
+⚡️ Özetle:
+Senin istediğin uygulama bir Electron tabanlı masaüstü editör olacak.
+İçinde React ile UI, Konva ile etiketleme, MediaRecorder + F4 shortcut ile video kaydı, FFmpeg ile export var.
+
+.
+
   },
 ])
 ```
